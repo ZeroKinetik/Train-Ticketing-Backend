@@ -3,12 +3,46 @@
  */
 package org.example;
 
+import org.example.entities.User;
+import org.example.services.UserServices;
+import org.example.utils.UserServiceUtil;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.UUID;
+
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        System.out.println("Welcome to Train Ticketing Backend");
+        System.out.println("1. Login\n2.SignUp");
+        System.out.print("Enter Option: ");
+        Scanner scanner = new Scanner(System.in);
+        int opt = scanner.nextInt();
+        User user;
+        switch (opt) {
+            case 1:
+                System.out.println("Enter Name: ");
+                String nameToLogin = scanner.next();
+                scanner.nextLine();
+                System.out.println("Enter Password: ");
+                String passwordToLogin = scanner.next();
+                user = new User(
+                        nameToLogin,
+                        passwordToLogin,
+                        UserServiceUtil.hashPassword(passwordToLogin),
+                        new ArrayList<>(),
+                        UUID.randomUUID().toString()
+                );
+                try {
+                    UserServices userServices = new UserServices(user);
+                    if (userServices.loginUser()) {
+                        System.out.println("Welcome Back " + nameToLogin + " 🙂");
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+        }
     }
 }

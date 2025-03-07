@@ -1,0 +1,39 @@
+[
+  {
+    "name": "heman",
+    "password": "hehe",
+    "hashed_password": "$2a$10$9/FZroJJYz/DAvywswEaBu.g9yQghHpg/b1lLML.g9JhJ04swf/YO",
+    "booked_tickets": [
+      {
+        "ticket_id": "ti1",
+        "user_id": "usr1",
+        "source": "erode",
+        "destination": "chennai",
+        "date_of_travel": "07-03-2025",
+        "train": {
+          "train_id": "tr1",
+          "train_no": "11-81-05",
+          "seats" : [
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 1, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0]
+          ],
+          "station_times": {
+            "erode": "06:00:00",
+            "salem": "08:00:00",
+            "vellore": "10:00:00",
+            "chennai": "12:00:00"
+          },
+          "stations": [
+            "erode","salem","vellore","chennai"
+          ]
+        }
+      }
+    ]
+  }
+]
