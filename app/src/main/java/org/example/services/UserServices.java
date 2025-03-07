@@ -35,4 +35,23 @@ public class UserServices {
         }).findFirst();
         return foundUser.isPresent();
     }
+
+    public Boolean signUser(User user) throws IOException {
+        try {
+            usersList.add(user);
+            saveUsers();
+            return Boolean.TRUE;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void saveUsers() throws IOException {
+        File userFile = new File(USERS_PATH);
+        objectMapper.writeValue(userFile,usersList);
+    }
+
+    public void findTrains(String source, String destination) {
+
+    }
 }

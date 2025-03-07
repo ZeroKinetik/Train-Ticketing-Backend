@@ -4,6 +4,7 @@
 package org.example;
 
 import org.example.entities.User;
+import org.example.services.TrainServices;
 import org.example.services.UserServices;
 import org.example.utils.UserServiceUtil;
 
@@ -16,7 +17,7 @@ public class App {
 
     public static void main(String[] args) {
         System.out.println("Welcome to Train Ticketing Backend");
-        System.out.println("1. Login\n2.SignUp");
+        System.out.println("1. Login\n2. SignUp\n3. Search Available Trains");
         System.out.print("Enter Option: ");
         Scanner scanner = new Scanner(System.in);
         int opt = scanner.nextInt();
@@ -40,6 +41,38 @@ public class App {
                     if (userServices.loginUser()) {
                         System.out.println("Welcome Back " + nameToLogin + " 🙂");
                     }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            case 2:
+                System.out.println("Enter Name: ");
+                String nameToSignUp = scanner.next();
+                scanner.nextLine();
+                System.out.println("Enter Password: ");
+                String passwordToSignUp = scanner.next();
+                user = new User(
+                        nameToSignUp,
+                        passwordToSignUp,
+                        UserServiceUtil.hashPassword(passwordToSignUp),
+                        new ArrayList<>(),
+                        UUID.randomUUID().toString()
+                );
+                try {
+                    UserServices userServices = new UserServices();
+                    if (userServices.signUser(user)) {
+                        System.out.println("Thank you for signing up " + nameToSignUp + " 😇!!");
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            case 3:
+                System.out.print("Enter Source: ");
+                String source = scanner.next();
+                System.out.print("Enter Destination: ");
+                String destination = scanner.next();
+                try {
+                    TrainServices trainServices = new TrainServices();
+                    trainServices.findTrains(source, destination);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
