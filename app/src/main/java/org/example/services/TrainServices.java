@@ -6,12 +6,15 @@ import org.example.entities.Train;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class TrainServices {
     ObjectMapper objectMapper = new ObjectMapper();
     private final String TRAIN_PATH = "app/src/main/java/org/example/db/trains.json";
     List<Train> listOfTrains;
+    Scanner scanner = new Scanner(System.in);
     public TrainServices() throws IOException {
         loadTrains();
     }
@@ -28,6 +31,61 @@ public class TrainServices {
         }
         if(!isTrainAvail) {
             System.out.println("Sorry!!, Your Search of Train is not Available 😕");
+        } else {
+            System.out.println("Enter the train id for check seat availability: ");
+            String trainId = scanner.next();
+            availableSeats(trainId);
         }
+    }
+
+    private void availableSeats(String trainId) {
+        for (Train t : listOfTrains) {
+            if(t.getTrainId().equals(trainId)) {
+               printAllSeats(t);
+            }
+        }
+    }
+
+    private void printAllSeats(Train t) {
+        for (List<Integer> rows : t.getSeats()) {
+            for(Integer col : rows) {
+                System.out.print(col + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    public List<List<Integer>> bookTickets() {
+        System.out.print("Enter the trainId: ");
+        String trainId = scanner.next();
+        System.out.print("Enter the source: ");
+        String source = scanner.next();
+        System.out.println("Enter the destination: ");
+        String destination = scanner.next();
+        System.out.println("Note: Enter the Row and Column Index Value for Booking Seat");
+        for (Train t : listOfTrains) {
+            if(t.getTrainId().equals(trainId)) {
+                printAllSeats(t);
+            }
+        }
+        System.out.print("Enter Row: ");
+        int row = scanner.nextInt();
+        System.out.print("Enter Column: ");
+        int column = scanner.nextInt();
+        for (Train t : listOfTrains) {
+            if(t.getTrainId().equals(trainId)) {
+                List<List<Integer>> availSeats = t.getSeats();
+                availSeats.get(row).set(column,1);
+                t.setSeats(availSeats);
+            }
+        }
+        for (Train t : listOfTrains) {
+            if(t.getTrainId().equals(trainId)) {
+                printAllSeats(t);
+                return t.getSeats();
+            }
+        }
+
+        return new ArrayList<>();
     }
 }

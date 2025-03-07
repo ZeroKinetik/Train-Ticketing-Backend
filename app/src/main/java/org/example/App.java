@@ -10,6 +10,7 @@ import org.example.utils.UserServiceUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -17,34 +18,13 @@ public class App {
 
     public static void main(String[] args) {
         System.out.println("Welcome to Train Ticketing Backend");
-        System.out.println("1. Login\n2. SignUp\n3. Search Available Trains");
+        System.out.println("1. SignUp\n2. Login\n3. Search Available Trains\n4. Book Tickets");
         System.out.print("Enter Option: ");
         Scanner scanner = new Scanner(System.in);
         int opt = scanner.nextInt();
         User user;
         switch (opt) {
             case 1:
-                System.out.println("Enter Name: ");
-                String nameToLogin = scanner.next();
-                scanner.nextLine();
-                System.out.println("Enter Password: ");
-                String passwordToLogin = scanner.next();
-                user = new User(
-                        nameToLogin,
-                        passwordToLogin,
-                        UserServiceUtil.hashPassword(passwordToLogin),
-                        new ArrayList<>(),
-                        UUID.randomUUID().toString()
-                );
-                try {
-                    UserServices userServices = new UserServices(user);
-                    if (userServices.loginUser()) {
-                        System.out.println("Welcome Back " + nameToLogin + " 🙂");
-                    }
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            case 2:
                 System.out.println("Enter Name: ");
                 String nameToSignUp = scanner.next();
                 scanner.nextLine();
@@ -65,6 +45,29 @@ public class App {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+
+            case 2:
+                System.out.println("Enter Name: ");
+                String nameToLogin = scanner.next();
+                scanner.nextLine();
+                System.out.println("Enter Password: ");
+                String passwordToLogin = scanner.next();
+                user = new User(
+                        nameToLogin,
+                        passwordToLogin,
+                        UserServiceUtil.hashPassword(passwordToLogin),
+                        new ArrayList<>(),
+                        UUID.randomUUID().toString()
+                );
+                try {
+                    UserServices userServices = new UserServices(user);
+                    if (userServices.loginUser()) {
+                        System.out.println("Welcome Back " + nameToLogin + " 🙂");
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
             case 3:
                 System.out.print("Enter Source: ");
                 String source = scanner.next();
@@ -73,6 +76,15 @@ public class App {
                 try {
                     TrainServices trainServices = new TrainServices();
                     trainServices.findTrains(source, destination);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            case 4:
+                try {
+                    TrainServices trainServices = new TrainServices();
+                    List<List<Integer>> bookedSeats = trainServices.bookTickets();
+                    UserServices userServices = new UserServices();
+                    userServices.saveBookedTicket(bookedSeats);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

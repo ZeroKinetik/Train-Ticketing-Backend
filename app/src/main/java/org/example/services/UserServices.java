@@ -51,7 +51,7 @@ public class UserServices {
         objectMapper.writeValue(userFile,usersList);
     }
 
-    public void findTrains(String source, String destination) {
+    public void saveBookedTicket(List<List<Integer>> bookedSeats) throws IOException {
 
     }
 }
