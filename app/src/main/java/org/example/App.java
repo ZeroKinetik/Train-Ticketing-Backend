@@ -3,6 +3,7 @@
  */
 package org.example;
 
+import org.example.entities.Ticket;
 import org.example.entities.User;
 import org.example.services.TrainServices;
 import org.example.services.UserServices;
@@ -18,7 +19,7 @@ public class App {
 
     public static void main(String[] args) {
         System.out.println("Welcome to Train Ticketing Backend");
-        System.out.println("1. SignUp\n2. Login\n3. Search Available Trains\n4. Book Tickets");
+        System.out.println("1. SignUp\n2. Login\n3. Search Available Trains\n4. Book Tickets\n5. EMail Confirmation");
         System.out.print("Enter Option: ");
         Scanner scanner = new Scanner(System.in);
         int opt = scanner.nextInt();
@@ -82,10 +83,19 @@ public class App {
             case 4:
                 try {
                     TrainServices trainServices = new TrainServices();
-                    List<List<Integer>> bookedSeats = trainServices.bookTickets();
+                    Ticket ticketBooked = trainServices.bookTickets();
                     UserServices userServices = new UserServices();
-                    userServices.saveBookedTicket(bookedSeats);
+                    userServices.saveBookedTicket(ticketBooked);
                 } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            case 5:
+                System.out.print("Enter your Email: ");
+                String email = scanner.next();
+                try {
+                    UserServices userServices = new UserServices();
+                    userServices.emailConfirmation(email);
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
         }

@@ -2,13 +2,12 @@ package org.example.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.entities.Ticket;
 import org.example.entities.Train;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class TrainServices {
     ObjectMapper objectMapper = new ObjectMapper();
@@ -55,7 +54,8 @@ public class TrainServices {
         }
     }
 
-    public List<List<Integer>> bookTickets() {
+    public Ticket bookTickets() {
+        Ticket ticket = new Ticket();
         System.out.print("Enter the trainId: ");
         String trainId = scanner.next();
         System.out.print("Enter the source: ");
@@ -82,10 +82,11 @@ public class TrainServices {
         for (Train t : listOfTrains) {
             if(t.getTrainId().equals(trainId)) {
                 printAllSeats(t);
-                return t.getSeats();
+                ticket = new Ticket(trainId, UUID.randomUUID().toString(), source, destination, new Date().toString(), t);
+                return ticket;
             }
         }
 
-        return new ArrayList<>();
+        return ticket;
     }
 }
